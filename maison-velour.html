@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAISON VELOUR — Haute Couture</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Didact+Gothic&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#c9a84c;--gold-l:#e8c97a;--gold-d:#8b6914;
+  --black:#080808;--deep:#0f0c0c;--char:#1a1714;--char2:#221e1a;
+  --ivory:#f5f0e8;--cream:#ede8dc;--muted:#7a7068;--light:#d4cfc6;
+  --wine:#3d1a24;--burg:#5c1f2e;
+  --agent-h:40px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--ivory);font-family:'Didact Gothic',sans-serif;overflow-x:hidden;cursor:none;}
+input,button,a{cursor:none;}
+@media(hover:none){body,input,button,a{cursor:auto;}.cursor,.cursor-ring{display:none!important;}}
+
+/* ═══ CURSOR ═══ */
+.cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);mix-blend-mode:difference;}
+.cursor-ring{position:fixed;width:38px;height:38px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:all .28s ease;opacity:.5;}
+
+/* ═══ LOGIN PAGE ═══ */
+#loginPage{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;background:var(--black);transition:opacity .8s;}
+#loginCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
+.login-card{position:relative;z-index:2;width:420px;background:rgba(15,12,12,.88);border:1px solid rgba(201,168,76,.22);backdrop-filter:blur(24px);padding:52px 48px;display:flex;flex-direction:column;gap:0;}
+.login-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;letter-spacing:.45em;color:var(--gold);text-align:center;margin-bottom:8px;}
+.login-tagline{font-size:.6rem;letter-spacing:.5em;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:36px;}
+.login-divider{width:40px;height:1px;background:var(--gold-d);margin:0 auto 36px;}
+.login-field{display:flex;flex-direction:column;gap:18px;margin-bottom:28px;}
+.login-field input{background:transparent;border:none;border-bottom:1px solid rgba(201,168,76,.25);padding:12px 0;color:var(--ivory);font-family:'Didact Gothic',sans-serif;font-size:.82rem;outline:none;transition:border-color .3s;letter-spacing:.05em;}
+.login-field input:focus{border-color:var(--gold);}
+.login-field input::placeholder{color:var(--muted);font-size:.75rem;}
+.login-btn{background:var(--gold);color:var(--black);border:none;padding:15px;font-family:'Didact Gothic',sans-serif;font-size:.7rem;letter-spacing:.4em;text-transform:uppercase;width:100%;transition:background .3s;margin-bottom:20px;}
+.login-btn:hover{background:var(--gold-l);}
+.login-key-row{text-align:center;margin-bottom:8px;}
+.login-key-toggle{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);border-bottom:1px dashed rgba(201,168,76,.3);display:inline-block;padding-bottom:2px;transition:color .3s;}
+.login-key-toggle:hover{color:var(--gold);}
+#keyField{margin-top:12px;margin-bottom:8px;}
+#keyField input{width:100%;background:transparent;border:1px solid rgba(201,168,76,.2);padding:10px 14px;color:var(--ivory);font-family:'Didact Gothic',sans-serif;font-size:.7rem;outline:none;letter-spacing:.03em;}
+#keyField input::placeholder{color:var(--muted);font-size:.65rem;}
+.login-note{font-size:.62rem;color:var(--muted);text-align:center;letter-spacing:.1em;line-height:1.7;}
+.login-note strong{color:var(--gold);}
+.login-error{color:#e07070;font-size:.68rem;letter-spacing:.1em;text-align:center;min-height:18px;margin-bottom:12px;}
+
+/* ═══ AGENT STATUS BAR ═══ */
+#agentBar{position:fixed;top:0;left:0;right:0;height:var(--agent-h);background:rgba(8,8,8,.97);border-bottom:1px solid rgba(201,168,76,.18);z-index:800;display:flex;align-items:center;padding:0 24px;gap:12px;}
+.agent-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);flex-shrink:0;transition:background .5s;}
+.agent-dot.pulse{animation:dotPulse 1.2s infinite;}
+#agentText{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--light);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#agentText strong{color:var(--gold);}
+.agent-spinner{width:10px;height:10px;border:1px solid rgba(201,168,76,.3);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;display:inline-block;vertical-align:middle;margin-right:6px;}
+.agent-clock{font-size:.58rem;letter-spacing:.15em;color:var(--muted);white-space:nowrap;flex-shrink:0;}
+@keyframes dotPulse{0%,100%{opacity:.4;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ═══ NAV ═══ */
+nav{position:fixed;top:var(--agent-h);left:0;right:0;z-index:700;padding:24px 56px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(to bottom,rgba(8,8,8,.9),transparent);transition:all .5s;}
+nav.scrolled{background:rgba(8,8,8,.97);padding:16px 56px;border-bottom:1px solid rgba(201,168,76,.12);backdrop-filter:blur(20px);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:300;letter-spacing:.42em;color:var(--gold);text-decoration:none;}
+.nav-links{display:flex;gap:40px;list-style:none;}
+.nav-links a{color:var(--light);text-decoration:none;font-size:.68rem;letter-spacing:.25em;text-transform:uppercase;transition:color .3s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width .4s ease;}
+.nav-links a:hover{color:var(--gold);}
+.nav-links a:hover::after{width:100%;}
+.nav-right{display:flex;align-items:center;gap:18px;}
+.nav-user{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+.nav-user strong{color:var(--gold);}
+.nav-logout{background:none;border:1px solid rgba(201,168,76,.25);color:var(--muted);font-family:'Didact Gothic',sans-serif;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;padding:7px 16px;transition:all .3s;}
+.nav-logout:hover{border-color:var(--gold);color:var(--gold);}
+.nav-bag{color:var(--gold);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;background:none;border:none;padding:0;display:flex;align-items:center;gap:6px;}
+@media(max-width:820px){.nav-links{display:none;}nav{padding:18px 24px;}}
+
+/* ═══ HERO ═══ */
+.hero{height:100vh;position:relative;display:flex;align-items:center;overflow:hidden;}
+#heroCloth{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
+.hero-grain{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");z-index:2;pointer-events:none;opacity:.5;}
+.hero-content{position:relative;z-index:10;padding-left:10vw;max-width:780px;}
+.hero-eyebrow{font-size:.62rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:28px;opacity:0;transform:translateY(20px);animation:fadeUp 1s .3s forwards;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3.8rem,9vw,8rem);font-weight:300;line-height:.92;color:var(--ivory);opacity:0;transform:translateY(40px);animation:fadeUp 1.2s .5s forwards;}
+.hero-title em{font-style:italic;color:var(--gold);}
+.hero-sub{margin-top:30px;font-size:.8rem;letter-spacing:.1em;color:var(--muted);max-width:340px;line-height:2;opacity:0;transform:translateY(20px);animation:fadeUp 1s .9s forwards;}
+.hero-cta{margin-top:44px;display:flex;gap:22px;align-items:center;opacity:0;transform:translateY(20px);animation:fadeUp 1s 1.1s forwards;flex-wrap:wrap;}
+.btn-gold{background:var(--gold);color:var(--black);border:none;padding:15px 42px;font-family:'Didact Gothic',sans-serif;font-size:.68rem;letter-spacing:.35em;text-transform:uppercase;transition:background .3s;text-decoration:none;display:inline-block;}
+.btn-gold:hover{background:var(--gold-l);}
+.btn-ghost{color:var(--ivory);font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;gap:10px;transition:color .3s;background:none;border:none;padding:0;}
+.btn-ghost:hover{color:var(--gold);}
+.btn-ghost .arr{transition:transform .3s;}
+.btn-ghost:hover .arr{transform:translateX(6px);}
+.hero-scroll{position:absolute;bottom:44px;left:50%;transform:translateX(-50%);z-index:10;display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0;animation:fadeUp 1s 1.5s forwards;}
+.hero-scroll span{font-size:.58rem;letter-spacing:.4em;text-transform:uppercase;color:var(--muted);}
+.scroll-line{width:1px;height:56px;background:linear-gradient(to bottom,var(--gold),transparent);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+
+/* ═══ MARQUEE ═══ */
+.marquee{padding:18px 0;background:var(--gold);overflow:hidden;}
+.mq-track{display:flex;white-space:nowrap;animation:mq 22s linear infinite;}
+.mq-track:hover{animation-play-state:paused;}
+.mq-track span{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-style:italic;color:var(--black);padding:0 32px;letter-spacing:.1em;}
+.mq-track .dot{font-style:normal;opacity:.35;padding:0;}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ═══ SECTION BASE ═══ */
+section{padding:110px 56px;}
+.s-label{font-size:.58rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;display:block;}
+.s-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,4.2rem);font-weight:300;line-height:1.1;color:var(--ivory);}
+.s-title em{font-style:italic;color:var(--gold);}
+.deco{width:56px;height:1px;background:var(--gold);margin:22px 0;}
+
+/* ═══ SCROLL REVEAL ═══ */
+.reveal{opacity:0;transform:translateY(44px);transition:opacity .85s ease,transform .85s ease;}
+.reveal.on{opacity:1;transform:none;}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.45s}
+
+/* ═══ COLLECTIONS ═══ */
+#collections{background:var(--deep);position:relative;}
+#collections::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold-d),transparent);}
+.col-hdr{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:64px;flex-wrap:wrap;gap:28px;}
+.col-intro p{margin-top:16px;font-size:.8rem;line-height:1.9;color:var(--muted);max-width:400px;}
+.link-g{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold-d);padding-bottom:3px;transition:all .3s;}
+.link-g:hover{color:var(--gold-l);border-color:var(--gold);}
+
+/* ═══ PRODUCT GRID ═══ */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.pcol2{grid-template-columns:repeat(2,1fr);}
+.pcol4{grid-template-columns:repeat(4,1fr);}
+@media(max-width:900px){.pgrid{grid-template-columns:repeat(2,1fr)!important;}}
+@media(max-width:540px){.pgrid{grid-template-columns:1fr!important;}}
+.product-card{position:relative;}
+.product-card.card-new{animation:cardIn .8s ease both;}
+@keyframes cardIn{from{opacity:0;transform:translateY(30px) scale(.97)}to{opacity:1;transform:none}}
+.pimg-wrap{position:relative;overflow:hidden;background:var(--char);aspect-ratio:3/4;}
+.pimg-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s ease;filter:brightness(.88) contrast(1.06);}
+.product-card:hover .pimg-wrap img{transform:scale(1.07);}
+.ai-badge{position:absolute;top:14px;left:14px;z-index:5;background:var(--gold);color:var(--black);font-size:.56rem;letter-spacing:.25em;text-transform:uppercase;padding:5px 12px;}
+.product-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,3,2,.92) 0%,transparent 55%);opacity:0;transition:opacity .5s;display:flex;flex-direction:column;justify-content:flex-end;padding:22px;gap:10px;}
+.product-card:hover .product-overlay{opacity:1;}
+.product-desc{font-size:.7rem;line-height:1.6;color:rgba(245,240,232,.8);font-style:italic;}
+.btn-add{background:var(--gold);color:var(--black);border:none;padding:11px 0;font-family:'Didact Gothic',sans-serif;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;width:100%;transition:background .3s;}
+.btn-add:hover{background:var(--gold-l);}
+.pinfo{padding:16px 0 0;display:flex;justify-content:space-between;align-items:flex-start;}
+.pname{font-family:'Cormorant Garamond',serif;font-size:1.08rem;color:var(--ivory);}
+.psub{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+.pprice{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold);white-space:nowrap;}
+
+/* Tilt */
+.product-card{transform-style:preserve-3d;transition:transform .1s;}
+
+/* ═══ ABOUT ═══ */
+#about{padding:0;background:var(--wine);}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;min-height:680px;}
+.feat-img{overflow:hidden;background:var(--burg);position:relative;}
+.feat-img img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.82);}
+.feat-body{display:flex;flex-direction:column;justify-content:center;padding:76px 68px;position:relative;}
+.feat-body::before{content:'"';position:absolute;top:24px;left:50px;font-family:'Cormorant Garamond',serif;font-size:9rem;color:rgba(201,168,76,.07);line-height:1;pointer-events:none;}
+.feat-quote{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;font-style:italic;line-height:1.5;color:var(--cream);position:relative;z-index:1;margin-bottom:24px;}
+.feat-attr{font-size:.62rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);}
+.feat-p{margin-top:36px;font-size:.8rem;color:var(--muted);line-height:1.9;margin-bottom:28px;}
+@media(max-width:820px){.feat-grid{grid-template-columns:1fr;}.feat-body{padding:52px 28px;}}
+
+/* ═══ PARALLAX ═══ */
+.parallax{height:440px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--char);}
+.para-bg{position:absolute;inset:-80px;background:radial-gradient(ellipse at center,#1e150f 0%,#0a0806 60%,#040302 100%);will-change:transform;}
+.para-txt{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,8vw,6.5rem);font-weight:300;color:rgba(201,168,76,.07);letter-spacing:.3em;text-transform:uppercase;text-align:center;position:relative;z-index:2;white-space:nowrap;user-select:none;}
+.para-ctr{position:absolute;z-index:5;text-align:center;}
+.para-ctr h3{font-family:'Cormorant Garamond',serif;font-size:2.1rem;font-weight:300;font-style:italic;color:var(--ivory);margin-bottom:10px;}
+.para-ctr p{font-size:.68rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);}
+
+/* ═══ MATERIALS ═══ */
+#materials{background:var(--black);}
+.mat-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:64px;}
+.mat-card{background:var(--char);padding:52px 44px;position:relative;overflow:hidden;transition:background .4s;}
+.mat-card:hover{background:var(--char2);}
+.mat-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:0;background:var(--gold);transition:height .5s ease;}
+.mat-card:hover::before{height:100%;}
+.mat-n{font-family:'Cormorant Garamond',serif;font-size:3.2rem;font-weight:300;color:rgba(201,168,76,.1);line-height:1;margin-bottom:14px;}
+.mat-name{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--ivory);margin-bottom:12px;}
+.mat-desc{font-size:.78rem;line-height:1.9;color:var(--muted);max-width:280px;}
+.mat-tag{margin-top:22px;display:inline-block;border:1px solid var(--gold-d);color:var(--gold);font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;padding:5px 14px;}
+@media(max-width:640px){.mat-grid{grid-template-columns:1fr;}}
+
+/* ═══ TESTIMONIALS ═══ */
+#testimonials{background:var(--deep);position:relative;}
+#testimonials::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold-d),transparent);}
+.t-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:64px;}
+.t-card{background:var(--char);padding:44px 36px;}
+.stars{color:var(--gold);letter-spacing:4px;font-size:.72rem;margin-bottom:20px;}
+.t-q{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;font-weight:300;color:var(--ivory);line-height:1.7;margin-bottom:22px;}
+.t-name{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);}
+.t-loc{font-size:.58rem;letter-spacing:.18em;color:var(--muted);margin-top:3px;}
+@media(max-width:820px){.t-grid{grid-template-columns:1fr;}}
+
+/* ═══ NEWSLETTER ═══ */
+#contact{background:var(--char);text-align:center;position:relative;overflow:hidden;}
+#contact::before{content:'VELOUR';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Cormorant Garamond',serif;font-size:17vw;font-weight:300;color:rgba(201,168,76,.04);white-space:nowrap;pointer-events:none;user-select:none;}
+.nl-inner{position:relative;z-index:2;max-width:560px;margin:0 auto;}
+.nl-title{font-family:'Cormorant Garamond',serif;font-size:2.6rem;font-weight:300;color:var(--ivory);margin-bottom:14px;}
+.nl-title em{font-style:italic;color:var(--gold);}
+.nl-sub{font-size:.78rem;color:var(--muted);margin-bottom:40px;line-height:1.8;}
+.nl-form{display:flex;max-width:440px;margin:0 auto;}
+.nl-input{flex:1;background:transparent;border:1px solid rgba(201,168,76,.28);border-right:none;padding:15px 20px;color:var(--ivory);font-family:'Didact Gothic',sans-serif;font-size:.78rem;outline:none;transition:border-color .3s;}
+.nl-input:focus{border-color:var(--gold);}
+.nl-input::placeholder{color:var(--muted);}
+.nl-btn{background:var(--gold);color:var(--black);border:none;padding:15px 26px;font-family:'Didact Gothic',sans-serif;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;transition:background .3s;white-space:nowrap;}
+.nl-btn:hover{background:var(--gold-l);}
+
+/* ═══ FOOTER ═══ */
+footer{background:var(--black);padding:72px 56px 36px;border-top:1px solid rgba(201,168,76,.1);}
+.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:64px;}
+.ft-logo{font-family:'Cormorant Garamond',serif;font-size:1.25rem;letter-spacing:.42em;color:var(--gold);}
+.ft-brand p{font-size:.78rem;color:var(--muted);line-height:1.9;margin-top:16px;max-width:250px;}
+.ft-col h4{font-size:.58rem;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;}
+.ft-col ul{list-style:none;}
+.ft-col li{margin-bottom:10px;}
+.ft-col a{font-size:.78rem;color:var(--muted);text-decoration:none;transition:color .3s;}
+.ft-col a:hover{color:var(--ivory);}
+.ft-btm{display:flex;justify-content:space-between;align-items:center;padding-top:32px;border-top:1px solid rgba(255,255,255,.06);flex-wrap:wrap;gap:16px;}
+.ft-copy{font-size:.62rem;color:var(--muted);}
+.ft-soc{display:flex;gap:22px;}
+.ft-soc a{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s;}
+.ft-soc a:hover{color:var(--gold);}
+@media(max-width:820px){.ft-grid{grid-template-columns:1fr 1fr;}.ft-brand{grid-column:1/-1;}}
+
+/* ═══ CHAT WIDGET ═══ */
+#chatWidget{position:fixed;bottom:28px;right:28px;z-index:6000;display:none;flex-direction:column;align-items:flex-end;gap:12px;}
+#chatToggle{width:58px;height:58px;border-radius:50%;background:var(--gold);border:none;color:var(--black);font-size:1.3rem;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 0 2px rgba(201,168,76,.2);transition:all .3s;flex-shrink:0;}
+#chatToggle:hover{background:var(--gold-l);transform:scale(1.06);}
+.chat-notif{position:absolute;top:-4px;right:-4px;width:18px;height:18px;border-radius:50%;background:#e05555;font-size:.55rem;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;}
+#chatPanel{display:none;width:340px;height:480px;background:rgba(15,12,12,.97);border:1px solid rgba(201,168,76,.2);backdrop-filter:blur(24px);flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.7);overflow:hidden;}
+.chat-header{background:var(--char);padding:16px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(201,168,76,.1);}
+.chat-avatar{width:32px;height:32px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--black);font-weight:600;flex-shrink:0;}
+.chat-header-info{flex:1;}
+.chat-header-name{font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ivory);}
+.chat-header-sub{font-size:.58rem;letter-spacing:.1em;color:var(--gold);margin-top:1px;}
+#chatMessages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth;}
+#chatMessages::-webkit-scrollbar{width:3px;}
+#chatMessages::-webkit-scrollbar-track{background:transparent;}
+#chatMessages::-webkit-scrollbar-thumb{background:rgba(201,168,76,.3);border-radius:2px;}
+.chat-msg{max-width:88%;padding:10px 14px;font-size:.75rem;line-height:1.6;border-radius:2px;}
+.chat-msg-user{align-self:flex-end;background:var(--gold);color:var(--black);border-radius:2px 2px 0 2px;}
+.chat-msg-assistant{align-self:flex-start;background:var(--char2);color:var(--light);border-left:2px solid var(--gold);border-radius:0 2px 2px 2px;}
+.chat-typing{align-self:flex-start;background:var(--char2);padding:12px 16px;border-left:2px solid var(--gold);display:flex;gap:5px;align-items:center;}
+.chat-typing span{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:typDot 1.2s infinite;}
+.chat-typing span:nth-child(2){animation-delay:.2s;}
+.chat-typing span:nth-child(3){animation-delay:.4s;}
+@keyframes typDot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.chat-input-row{display:flex;border-top:1px solid rgba(201,168,76,.12);padding:10px 14px;gap:8px;align-items:center;}
+#chatField{flex:1;background:transparent;border:none;color:var(--ivory);font-family:'Didact Gothic',sans-serif;font-size:.75rem;outline:none;letter-spacing:.04em;}
+#chatField::placeholder{color:var(--muted);font-size:.7rem;}
+#chatSend{background:none;border:none;color:var(--gold);font-size:1.2rem;padding:4px 8px;transition:transform .2s;}
+#chatSend:hover{transform:translateX(3px);}
+
+/* ═══ TOAST ═══ */
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--black);padding:13px 28px;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;z-index:7000;opacity:0;transition:opacity .4s;pointer-events:none;white-space:nowrap;}
+</style>
+</head>
+<body>
+
+<!-- CURSORS -->
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="curRing"></div>
+
+<!-- ═══════════════════════════════════════════
+     LOGIN PAGE
+═══════════════════════════════════════════ -->
+<div id="loginPage">
+  <canvas id="loginCanvas"></canvas>
+  <div class="login-card">
+    <div class="login-logo">MAISON VELOUR</div>
+    <div class="login-tagline">Private Members Access</div>
+    <div class="login-divider"></div>
+    <div class="login-error" id="loginErr"></div>
+    <div class="login-field">
+      <input id="lName"  type="text"     placeholder="Your Full Name">
+      <input id="lEmail" type="email"    placeholder="Email Address">
+      <input id="lPass"  type="password" placeholder="Password">
+    </div>
+    <button class="login-btn" onclick="doLogin()">Enter the Atelier</button>
+    <div class="login-key-row">
+      <span class="login-key-toggle" onclick="toggleKey()">+ Anthropic API Key (for self-hosting)</span>
+    </div>
+    <div id="keyField" style="display:none">
+      <input id="apiKeyInput" type="password" placeholder="sk-ant-... (leave blank in Claude.ai preview)">
+    </div>
+    <div class="login-note" style="margin-top:16px">
+      Demo: any name · any email · any password (4+ chars)<br>
+      <strong>AI features</strong> powered by Claude — live in Claude.ai preview
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MAIN SITE
+═══════════════════════════════════════════ -->
+<div id="mainSite" style="display:none">
+
+  <!-- AGENT BAR -->
+  <div id="agentBar">
+    <div class="agent-dot pulse" id="agentDot"></div>
+    <div id="agentText">AI Agent initialising...</div>
+    <div class="agent-clock" id="agentClock"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav id="mainNav">
+    <a href="#top" class="nav-logo" onclick="return scrollTo('top')">MAISON VELOUR</a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="return scrollTo('collections')">Collections</a></li>
+      <li><a href="#" onclick="return scrollTo('about')">About</a></li>
+      <li><a href="#" onclick="return scrollTo('materials')">Atelier</a></li>
+      <li><a href="#" onclick="return scrollTo('contact')">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <span class="nav-user">Welcome, <strong id="navName"></strong></span>
+      <button class="nav-bag" id="bagBtn" onclick="alert('Cart: ' + cartItems.join(', ') || 'empty')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Bag (<span id="bagCount">0</span>)
+      </button>
+      <button class="nav-logout" onclick="doLogout()">Sign Out</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <canvas id="heroCloth"></canvas>
+    <div class="hero-grain"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Spring / Summer 2026 · AI-Curated</p>
+      <h1 class="hero-title">Draped in<br><em>Luxury</em></h1>
+      <p class="hero-sub">Where heritage craftsmanship meets contemporary silhouette. Our AI stylist discovers new pieces daily.</p>
+      <div class="hero-cta">
+        <a href="#" class="btn-gold" onclick="return scrollTo('collections')">Explore Collection</a>
+        <a href="#" class="btn-ghost" onclick="return scrollTo('about')">Our Story <span class="arr">→</span></a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee">
+    <div class="mq-track">
+      <span>Haute Couture</span><span class="dot">◆</span><span>Handcrafted Excellence</span><span class="dot">◆</span><span>Italian Cashmere</span><span class="dot">◆</span><span>AI-Curated Arrivals</span><span class="dot">◆</span><span>SS 2026</span><span class="dot">◆</span><span>Maison Velour</span><span class="dot">◆</span>
+      <span>Haute Couture</span><span class="dot">◆</span><span>Handcrafted Excellence</span><span class="dot">◆</span><span>Italian Cashmere</span><span class="dot">◆</span><span>AI-Curated Arrivals</span><span class="dot">◆</span><span>SS 2026</span><span class="dot">◆</span><span>Maison Velour</span><span class="dot">◆</span>
+    </div>
+  </div>
+
+  <!-- COLLECTIONS -->
+  <section id="collections">
+    <div class="col-hdr">
+      <div class="col-intro">
+        <span class="s-label reveal">The Collection</span>
+        <h2 class="s-title reveal d1">Pieces That<br><em>Define</em> You</h2>
+        <p class="reveal d2">Each garment is crafted with uncompromising attention to detail. Our AI stylist discovers new arrivals daily from across the world's finest ateliers.</p>
+      </div>
+      <a href="#" class="link-g reveal" onclick="return false">View All Pieces</a>
+    </div>
+    <!-- Products injected here by JS -->
+    <div class="pgrid" id="productGrid"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <div id="about">
+    <div class="feat-grid">
+      <div class="feat-img">
+        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=900&q=80" alt="Brand story"
+             onerror="this.style.background='#5c1f2e'">
+      </div>
+      <div class="feat-body">
+        <span class="s-label reveal">The Philosophy</span>
+        <div class="deco reveal d1"></div>
+        <p class="feat-quote reveal d2">"True luxury is not the excess of things. It is the refinement of everything — the cut, the fall, the silence of a perfectly chosen fabric."</p>
+        <p class="feat-attr reveal d3">— Isabeau Laurent, Creative Director</p>
+        <p class="feat-p reveal d4">Founded in Paris, Maison Velour has been sculpting the wardrobes of discerning clients for over three decades. Our AI discovery engine scours the globe for new arrivals every hour.</p>
+        <a href="#" class="btn-gold reveal" style="align-self:flex-start" onclick="return scrollTo('collections')">Discover The Collection</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARALLAX -->
+  <div class="parallax">
+    <div class="para-bg" id="paraBg"></div>
+    <div class="para-txt">MAISON VELOUR</div>
+    <div class="para-ctr">
+      <h3>Where Every Thread Tells a Story</h3>
+      <p>Est. 1991 · Paris, France · AI-Powered Discovery</p>
+    </div>
+  </div>
+
+  <!-- MATERIALS -->
+  <section id="materials">
+    <div class="reveal">
+      <span class="s-label">The Atelier</span>
+      <h2 class="s-title">Sourced from<br><em>The World's Finest</em></h2>
+    </div>
+    <div class="mat-grid">
+      <div class="mat-card reveal"><div class="mat-n">01</div><div class="mat-name">Italian Cashmere</div><p class="mat-desc">Sourced from Mongolian highlands, woven in the mills of Biella. Softness measured in microns.</p><span class="mat-tag">Grade A · Single Origin</span></div>
+      <div class="mat-card reveal d1"><div class="mat-n">02</div><div class="mat-name">Japanese Silk</div><p class="mat-desc">Hand-loomed in Kyoto's ancient weaving districts. Four centuries of silk artistry in every bolt.</p><span class="mat-tag">Hand-loomed · Heritage</span></div>
+      <div class="mat-card reveal d2"><div class="mat-n">03</div><div class="mat-name">Belgian Lace</div><p class="mat-desc">Point de Venise crafted by Brussels' last generation of lacemakers. Irreplaceable and finite.</p><span class="mat-tag">Handmade · Exclusive</span></div>
+      <div class="mat-card reveal d3"><div class="mat-n">04</div><div class="mat-name">Duchess Satin</div><p class="mat-desc">Woven exclusively for Maison Velour with a thread count that rivals gemstones in luminosity.</p><span class="mat-tag">Bespoke · Custom Weave</span></div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <div style="text-align:center">
+      <span class="s-label reveal">Client Stories</span>
+      <h2 class="s-title reveal d1">Worn by Those<br>Who <em>Know</em></h2>
+    </div>
+    <div class="t-grid">
+      <div class="t-card reveal"><div class="stars">★★★★★</div><p class="t-q">"The evening gown I wore to the Met Gala was not merely a dress. Every glance lingered, every compliment was an education."</p><div class="t-name">Camille Beaumont</div><div class="t-loc">Paris, France</div></div>
+      <div class="t-card reveal d1"><div class="stars">★★★★★</div><p class="t-q">"I have shopped at every luxury house in the world. Maison Velour is the only one that makes me feel the fabric before I see it."</p><div class="t-name">Diana Ashworth-Pierce</div><div class="t-loc">London, England</div></div>
+      <div class="t-card reveal d2"><div class="stars">★★★★★</div><p class="t-q">"The cashmere coat arrived in tissue and ribbon. I wore it at the Burj Al Arab and the concierge asked who dressed me."</p><div class="t-name">Noor Al Rashid</div><div class="t-loc">Dubai, UAE</div></div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section id="contact">
+    <div class="nl-inner">
+      <span class="s-label reveal">Exclusive Access</span>
+      <h2 class="nl-title reveal d1">Join the <em>Inner Circle</em></h2>
+      <p class="nl-sub reveal d2">Be first to receive AI-discovered arrivals, private events, and invitations to our Parisian atelier.</p>
+      <div class="nl-form reveal d3">
+        <input type="email" class="nl-input" id="nlEmail" placeholder="Your email address">
+        <button class="nl-btn" onclick="subscribe()">Join Now</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="ft-grid">
+      <div class="ft-brand">
+        <div class="ft-logo">MAISON VELOUR</div>
+        <p>Purveyors of exceptional garments since 1991. Our AI stylist discovers new pieces daily from the world's finest ateliers.</p>
+      </div>
+      <div class="ft-col"><h4>Collections</h4><ul><li><a href="#" onclick="return scrollTo('collections')">Evening Wear</a></li><li><a href="#" onclick="return scrollTo('collections')">Day Collection</a></li><li><a href="#" onclick="return scrollTo('collections')">Outerwear</a></li><li><a href="#" onclick="return scrollTo('collections')">Accessories</a></li></ul></div>
+      <div class="ft-col"><h4>Atelier</h4><ul><li><a href="#" onclick="return scrollTo('about')">Our Story</a></li><li><a href="#" onclick="return scrollTo('materials')">Craftsmanship</a></li><li><a href="#" onclick="return scrollTo('materials')">Materials</a></li></ul></div>
+      <div class="ft-col"><h4>Services</h4><ul><li><a href="#" onclick="return scrollTo('contact')">Private Appointments</a></li><li><a href="#" onclick="return scrollTo('contact')">Alterations</a></li><li><a href="#" onclick="return scrollTo('contact')">Contact</a></li></ul></div>
+    </div>
+    <div class="ft-btm">
+      <p class="ft-copy">© 2026 Maison Velour. All rights reserved. Paris · London · Dubai</p>
+      <div class="ft-soc"><a href="#" onclick="return false">Instagram</a><a href="#" onclick="return false">Pinterest</a><a href="#" onclick="return false">LinkedIn</a></div>
+    </div>
+  </footer>
+
+</div><!-- /mainSite -->
+
+<!-- ═══════════════════════════════════════════
+     AI CHAT WIDGET — Isabella
+═══════════════════════════════════════════ -->
+<div id="chatWidget">
+  <div id="chatPanel">
+    <div class="chat-header">
+      <div class="chat-avatar">I</div>
+      <div class="chat-header-info">
+        <div class="chat-header-name">Isabella</div>
+        <div class="chat-header-sub">✦ Personal Style Advisor · AI-Powered</div>
+      </div>
+      <button onclick="toggleChat()" style="background:none;border:none;color:var(--muted);font-size:1rem;padding:4px;">✕</button>
+    </div>
+    <div id="chatMessages"></div>
+    <div class="chat-input-row">
+      <input id="chatField" placeholder="Ask Isabella for style advice..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button id="chatSend" onclick="sendChat()">➤</button>
+    </div>
+  </div>
+  <button id="chatToggle" onclick="toggleChat()" title="Chat with Isabella">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <div class="chat-notif" id="chatNotif" style="display:none">1</div>
+  </button>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════ -->
+<script>
+'use strict';
+
+// ── CONSTANTS ──────────────────────────────
+const MODEL = 'claude-sonnet-4-20250514';
+const AGENT_INTERVAL = 90000; // 90s between searches
+
+const IMG_POOL = {
+  gown:   ['photo-1566174053879-31528523f8ae','photo-1596755389378-c31d21fd1273','photo-1612423284934-2850a4ea6b0f'],
+  coat:   ['photo-1539109136881-3be0616acf4b','photo-1542272604-787c3835535d'],
+  dress:  ['photo-1515886657613-9f3515b0c78f','photo-1595777457583-95e059d581b8','photo-1558618666-fcd25c85cd64'],
+  blazer: ['photo-1509631179647-0177331693ae','photo-1554412933-514a83d2f3c8'],
+  trouser:['photo-1523381210434-271e8be1f52b','photo-1434389677669-e08b4cac3105'],
+  top:    ['photo-1490481651871-ab68de25d43d','photo-1469334031218-e382a71b716b'],
+};
+const ALL_IDS = Object.values(IMG_POOL).flat();
+
+const DEMO_PRODUCTS = [
+  {name:'Midnight Chiffon Wrap',    material:'French Chiffon',        price:'£1,680', category:'dress',   badge:'Trending',        description:'A floor-sweeping midnight blue wrap with gold thread detail at the waist.'},
+  {name:'The Baroness Coat',        material:'Double-faced Cashmere', price:'£3,200', category:'coat',    badge:'Limited Edition',  description:'Sculptural ivory cashmere overcoat with hand-stitched tortoise lapel.'},
+  {name:'Obsidian Power Blazer',    material:'Duchess Satin',         price:'£2,100', category:'blazer',  badge:'New Arrival',      description:'Architectural blazer in obsidian satin with hand-polished gold buttons.'},
+  {name:'Ivory Bias-Cut Gown',      material:'Charmeuse Silk',        price:'£4,500', category:'gown',    badge:'Just Discovered',  description:'Pure charmeuse silk that pools like liquid light at the hem.'},
+  {name:'The Velvet Palazzo',       material:'Silk Velvet',           price:'£780',   category:'trouser', badge:'Trending',         description:'Wide-leg trousers in crushed midnight velvet with fluid movement.'},
+  {name:'Champagne Cowl Top',       material:'Japanese Silk',         price:'£620',   category:'top',     badge:'New Arrival',      description:'Gossamer silk top with an artfully draped cowl in champagne.'},
+  {name:'The Nocturne Column',      material:'Crepe de Chine',        price:'£1,900', category:'dress',   badge:'Just Discovered',  description:'A deep noir column dress in fluid crepe — restrained and devastating.'},
+  {name:'Blush Cocoon Coat',        material:'Mongolian Cashmere',    price:'£2,800', category:'coat',    badge:'Limited Edition',  description:'Enveloping blush cashmere in a cocoon silhouette with silk lining.'},
+  {name:'The Sovereign Cape Gown',  material:'Silk Organza',          price:'£5,200', category:'gown',    badge:'New Arrival',      description:'A dramatic cape-back gown in weightless organza that commands every room.'},
+  {name:'Bordeaux Smoking Blazer',  material:'Wool Crepe',            price:'£1,750', category:'blazer',  badge:'Trending',         description:'A bordeaux smoking jacket that blurs the line between suiting and evening.'},
+];
+let demoIdx = 0;
+
+// ── STATE ──────────────────────────────────
+let user = null;
+let apiKey = '';
+let products = [];
+let cartItems = [];
+let imgRot = 0;
+let chatHistory = [];
+let chatOpen = false;
+let agentTimer = null;
+let loopId = null;
+
+// ── HELPERS ────────────────────────────────
+function scrollTo(id){ document.getElementById(id)?.scrollIntoView({behavior:'smooth'}); return false; }
+
+function pickImg(category){
+  const pool = IMG_POOL[category] || ALL_IDS;
+  const id = pool[imgRot++ % pool.length];
+  return `https://images.unsplash.com/${id}?w=600&q=80`;
+}
+
+function showToast(msg){
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  requestAnimationFrame(()=> requestAnimationFrame(()=> t.style.opacity='1'));
+  setTimeout(()=>{ t.style.opacity='0'; setTimeout(()=>t.remove(),400); }, 2600);
+}
+
+// ── AUTH ────────────────────────────────────
+function doLogin(){
+  const name  = document.getElementById('lName').value.trim();
+  const email = document.getElementById('lEmail').value.trim();
+  const pass  = document.getElementById('lPass').value;
+  apiKey = document.getElementById('apiKeyInput').value.trim();
+
+  const err = document.getElementById('loginErr');
+  if(!name){ err.textContent='Please enter your name.'; return; }
+  if(!email.includes('@')){ err.textContent='Please enter a valid email.'; return; }
+  if(pass.length < 4){ err.textContent='Password must be at least 4 characters.'; return; }
+  err.textContent='';
+
+  user = { name, email, firstName: name.split(' ')[0] };
+  const pg = document.getElementById('loginPage');
+  pg.style.opacity='0';
+  setTimeout(()=>{
+    pg.style.display='none';
+    document.getElementById('mainSite').style.display='block';
+    document.getElementById('chatWidget').style.display='flex';
+    initMain();
+  },800);
+}
+
+function doLogout(){
+  user=null; chatHistory=[];
+  cartItems=[]; products=[];
+  clearInterval(agentTimer);
+  cancelAnimationFrame(loopId);
+  document.getElementById('mainSite').style.display='none';
+  document.getElementById('chatWidget').style.display='none';
+  document.getElementById('productGrid').innerHTML='';
+  document.getElementById('chatMessages').innerHTML='';
+  document.getElementById('loginPage').style.display='flex';
+  document.getElementById('loginPage').style.opacity='1';
+  document.getElementById('loginErr').textContent='';
+}
+
+function toggleKey(){
+  const f=document.getElementById('keyField');
+  f.style.display = f.style.display==='none' ? 'block':'none';
+}
+
+// ── CLAUDE API ─────────────────────────────
+async function callClaude({ messages, system='', useSearch=false, maxTokens=1000 }){
+  const headers = {
+    'Content-Type':'application/json',
+    'anthropic-dangerous-direct-browser-access':'true'
+  };
+  if(apiKey) headers['x-api-key'] = apiKey;
+
+  const body = { model:MODEL, max_tokens:maxTokens, messages };
+  if(system) body.system = system;
+  if(useSearch) body.tools = [{ type:'web_search_20250305', name:'web_search' }];
+
+  const res = await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST', headers, body:JSON.stringify(body)
+  });
+  if(!res.ok) throw new Error(`HTTP ${res.status}`);
+  const data = await res.json();
+  return data.content.map(b=>b.type==='text'?b.text:'').filter(Boolean).join('\n');
+}
+
+// ── AI AGENT ───────────────────────────────
+const AGENT_SYS = `You are a luxury fashion discovery AI for Maison Velour haute couture boutique in Paris.
+Your job: use web_search to find the LATEST luxury fashion trends, new designer releases, and haute couture items for 2026.
+Search for real fashion news from Vogue, Harpers Bazaar, luxury brand sites, and fashion weeks.
+
+After searching, respond with ONLY a raw JSON object — no markdown, no code fences, no explanation — exactly like this:
+{
+  "products": [
+    {
+      "name": "Elegant descriptive product name",
+      "material": "Specific premium fabric",
+      "price": "£X,XXX",
+      "category": "gown",
+      "badge": "New Arrival",
+      "description": "One elegant sentence describing this piece."
+    },
+    {
+      "name": "Second product name",
+      "material": "Specific premium fabric",
+      "price": "£X,XXX",
+      "category": "coat",
+      "badge": "Trending",
+      "description": "One elegant sentence."
+    }
+  ],
+  "trend": "One sentence summary of what fashion trend you discovered online"
+}
+RULES: category must be one of: gown coat dress blazer trouser top
+badge must be one of: New Arrival Trending Limited Edition Just Discovered
+price in GBP £500-£6000. Be inspired by REAL current fashion you find online.`;
+
+async function startAgent(){
+  setAgentState('searching');
+  await agentTick();
+  agentTimer = setInterval(agentTick, AGENT_INTERVAL);
+}
+
+async function agentTick(){
+  setAgentState('searching');
+  try {
+    const raw = await callClaude({
+      messages:[{role:'user', content:'Search for the very latest luxury fashion arrivals and trends for 2026. Generate 2 new products for Maison Velour inspired by what you find.'}],
+      system: AGENT_SYS,
+      useSearch: true,
+      maxTokens: 1400
+    });
+
+    // Extract JSON from response
+    const m = raw.match(/\{[\s\S]*\}/);
+    if(!m) throw new Error('No JSON in response');
+    const data = JSON.parse(m[0]);
+    if(!data.products?.length) throw new Error('No products array');
+
+    data.products.slice(0,2).forEach(p => addProductCard(p, true));
+    setAgentState('found', data.products.slice(0,2), data.trend||'');
+
+  } catch(e){
+    console.warn('Agent fallback:', e.message);
+    // Simulation fallback — still shows great products
+    const p1 = DEMO_PRODUCTS[demoIdx % DEMO_PRODUCTS.length];
+    const p2 = DEMO_PRODUCTS[(demoIdx+1) % DEMO_PRODUCTS.length];
+    demoIdx += 2;
+    addProductCard(p1, true);
+    setTimeout(()=> addProductCard(p2, true), 1200);
+    setAgentState('sim', [p1,p2], '');
+  }
+}
+
+function setAgentState(state, items=[], trend=''){
+  const dot  = document.getElementById('agentDot');
+  const txt  = document.getElementById('agentText');
+  const clk  = document.getElementById('agentClock');
+  const now  = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+
+  if(state==='searching'){
+    dot.style.background='#f0c040'; dot.classList.add('pulse');
+    txt.innerHTML='<span class="agent-spinner"></span> AI Agent searching for new arrivals...';
+    clk.textContent='';
+  } else if(state==='found'){
+    dot.style.background='#4caf50'; dot.classList.remove('pulse');
+    const names = items.map(p=>`<strong>${p.name}</strong>`).join(' · ');
+    txt.innerHTML=`✦ AI discovered: ${names}${trend?' · '+trend:''}`;
+    clk.textContent=`Updated ${now}`;
+  } else { // simulation
+    dot.style.background='var(--gold)'; dot.classList.remove('pulse');
+    const names = items.map(p=>`<strong>${p.name}</strong>`).join(' · ');
+    txt.innerHTML=`✦ AI Stylist curated: ${names}`;
+    clk.textContent=`Updated ${now}`;
+  }
+}
+
+function addProductCard(prod, isNew=false){
+  const grid = document.getElementById('productGrid');
+  const img  = pickImg(prod.category);
+
+  products.push(prod);
+
+  const card = document.createElement('div');
+  card.className='product-card'+(isNew?' card-new':'');
+  card.innerHTML=`
+    <div class="pimg-wrap">
+      ${isNew?`<div class="ai-badge">${prod.badge||'AI Found'}</div>`:''}
+      <img src="${img}" alt="${prod.name}" loading="lazy"
+           onerror="this.src='https://images.unsplash.com/${ALL_IDS[0]}?w=600&q=80'">
+      <div class="product-overlay">
+        <p class="product-desc">${prod.description||''}</p>
+        <button class="btn-add" onclick="addToCart(this,'${prod.name.replace(/'/g,"\\'")}','${prod.price}')">Add to Bag</button>
+      </div>
+    </div>
+    <div class="pinfo">
+      <div><div class="pname">${prod.name}</div><div class="psub">${prod.material}</div></div>
+      <div class="pprice">${prod.price}</div>
+    </div>`;
+
+  // 3D tilt
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const dx=(e.clientX-r.left-r.width/2)/r.width;
+    const dy=(e.clientY-r.top-r.height/2)/r.height;
+    card.style.transform=`perspective(900px) rotateY(${dx*7}deg) rotateX(${-dy*7}deg) scale(1.02)`;
+    card.style.transition='transform 0.08s';
+  });
+  card.addEventListener('mouseleave',()=>{
+    card.style.transform='';
+    card.style.transition='transform 0.5s ease';
+  });
+
+  grid.appendChild(card);
+  if(isNew) showToast(`✦ AI found: ${prod.name}`);
+}
+
+// ── AI CHAT — Isabella ──────────────────────
+const ISABELLA_SYS = ()=>`You are Isabella, the exclusive personal shopping advisor at Maison Velour — a legendary Parisian haute couture house.
+You are warm, sophisticated, deeply knowledgeable about luxury fashion, and elegantly persuasive.
+The client's name is ${user?.firstName||'darling'}.
+
+CURRENT COLLECTION (what you can recommend):
+${products.slice(0,12).map(p=>`• ${p.name} — ${p.material} — ${p.price}: ${p.description||''}`).join('\n')}
+
+YOUR MISSION: Help the client fall in love with pieces. Give genuine style advice. Recommend specific items naturally.
+RULES: Max 3 sentences per reply. Use the client's first name occasionally. Sound like a real Parisian fashion advisor.
+You may search the web for styling tips, trend information, or fabric care advice when relevant.
+Never sound like a chatbot. Be a brilliant, trusted friend with exquisite taste.`;
+
+function toggleChat(){
+  chatOpen=!chatOpen;
+  const panel=document.getElementById('chatPanel');
+  panel.style.display=chatOpen?'flex':'none';
+  document.getElementById('chatNotif').style.display='none';
+  if(chatOpen && chatHistory.length===0) sendGreeting();
+}
+
+function sendGreeting(){
+  const msg=`Bonjour, ${user?.firstName||'darling'}. I'm Isabella, your personal style advisor here at Maison Velour. Are you searching for something special today, or shall I guide you through our latest AI-discovered arrivals?`;
+  appendMsg('assistant',msg);
+  chatHistory.push({role:'assistant',content:msg});
+}
+
+async function sendChat(){
+  const inp=document.getElementById('chatField');
+  const text=inp.value.trim();
+  if(!text) return;
+  inp.value='';
+  appendMsg('user',text);
+  chatHistory.push({role:'user',content:text});
+  showTyping();
+  try{
+    const reply = await callClaude({
+      messages:[...chatHistory],
+      system:ISABELLA_SYS(),
+      useSearch:true,
+      maxTokens:400
+    });
+    hideTyping();
+    appendMsg('assistant',reply);
+    chatHistory.push({role:'assistant',content:reply});
+  }catch(e){
+    hideTyping();
+    const fb=`Please forgive the interruption, ${user?.firstName||'darling'}. Allow me to suggest our newest arrivals — each piece discovered personally by our AI stylist just for you. Shall we explore?`;
+    appendMsg('assistant',fb);
+    chatHistory.push({role:'assistant',content:fb});
+  }
+}
+
+function appendMsg(role,text){
+  const box=document.getElementById('chatMessages');
+  const d=document.createElement('div');
+  d.className=`chat-msg chat-msg-${role}`;
+  d.textContent=text;
+  box.appendChild(d);
+  box.scrollTop=box.scrollHeight;
+}
+function showTyping(){
+  const box=document.getElementById('chatMessages');
+  const d=document.createElement('div');
+  d.id='typDot'; d.className='chat-typing';
+  d.innerHTML='<span></span><span></span><span></span>';
+  box.appendChild(d); box.scrollTop=box.scrollHeight;
+}
+function hideTyping(){ document.getElementById('typDot')?.remove(); }
+
+// ── CART ────────────────────────────────────
+function addToCart(btn, name, price){
+  cartItems.push(name);
+  document.getElementById('bagCount').textContent=cartItems.length;
+  btn.textContent='✓ Added';
+  btn.style.background='#4caf50';
+  setTimeout(()=>{ btn.textContent='Add to Bag'; btn.style.background=''; },2000);
+  showToast(`"${name}" added to bag`);
+  // Prompt Isabella to follow up
+  if(chatHistory.length>0 && !chatOpen){
+    document.getElementById('chatNotif').style.display='flex';
+    chatHistory.push({role:'user', content:`[System: client just added ${name} (${price}) to their bag]`});
+    setTimeout(async()=>{
+      try{
+        const upsell = await callClaude({
+          messages:[...chatHistory, {role:'user', content:`Say one elegant sentence congratulating the client on their choice of "${name}" and subtly suggest one complementary piece from the collection.`}],
+          system:ISABELLA_SYS(),
+          maxTokens:150
+        });
+        chatHistory.push({role:'assistant',content:upsell});
+        // Show notif
+        document.getElementById('chatNotif').style.display='flex';
+        document.getElementById('chatNotif').textContent='✦';
+      }catch(e){}
+    },1000);
+  }
+}
+
+// ── SUBSCRIBE ───────────────────────────────
+function subscribe(){
+  const inp=document.getElementById('nlEmail');
+  if(inp.value && inp.value.includes('@')){
+    inp.value=''; inp.placeholder='Welcome to the Inner Circle ✦';
+    showToast('Welcome to the Inner Circle');
+  } else { inp.placeholder='Please enter a valid email'; }
+}
+
+// ── CURSOR ──────────────────────────────────
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{ mx=e.clientX; my=e.clientY; document.getElementById('cur').style.cssText=`left:${mx}px;top:${my}px`; });
+(function animRing(){
+  rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
+  const r=document.getElementById('curRing');
+  if(r){ r.style.left=rx+'px'; r.style.top=ry+'px'; }
+  requestAnimationFrame(animRing);
+})();
+document.querySelectorAll('a,button,input').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ const r=document.getElementById('curRing'); r.style.width='60px';r.style.height='60px';r.style.opacity='1'; });
+  el.addEventListener('mouseleave',()=>{ const r=document.getElementById('curRing'); r.style.width='38px';r.style.height='38px';r.style.opacity='.5'; });
+});
+
+// ── SCROLL REVEAL ───────────────────────────
+function initScrollReveal(){
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('on'); });
+  },{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+}
+
+// ── NAV SCROLL ──────────────────────────────
+window.addEventListener('scroll',()=>{
+  document.getElementById('mainNav')?.classList.toggle('scrolled',scrollY>60);
+  const el=document.getElementById('paraBg');
+  if(el){
+    const r=el.closest('.parallax').getBoundingClientRect();
+    const p=(window.innerHeight-r.top)/(window.innerHeight+r.height);
+    el.style.transform=`translateY(${(p-.5)*-70}px)`;
+  }
+});
+
+// ── CLOTH SIMULATION ────────────────────────
+function initCloth(canvasId, cols=26, rows=18, gravity=0.25, colorFn){
+  const c=document.getElementById(canvasId);
+  if(!c) return null;
+  const ctx=c.getContext('2d');
+  let W,H,pts=[],links=[],t=0,mX=0,mY=0;
+
+  function resize(){
+    W=c.width=c.offsetWidth||window.innerWidth;
+    H=c.height=c.offsetHeight||window.innerHeight;
+    pts=[]; links=[];
+    for(let r=0;r<rows;r++) for(let cc=0;cc<cols;cc++){
+      const x=W*.04+cc*(W*.92/(cols-1));
+      const y=H*.06+r*(H*.88/(rows-1));
+      pts.push({x,y,px:x,py:y,ox:x,oy:y,pinned:r===0});
+    }
+    for(let r=0;r<rows;r++) for(let cc=0;cc<cols;cc++){
+      const i=r*cols+cc;
+      if(cc<cols-1) links.push([i,i+1,dist(pts[i],pts[i+1])]);
+      if(r<rows-1)  links.push([i,i+cols,dist(pts[i],pts[i+cols])]);
+    }
+  }
+  function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y);}
+
+  c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect();mX=e.clientX-r.left;mY=e.clientY-r.top;});
+
+  function step(){
+    t+=.009;
+    const wind=Math.sin(t)*.38+Math.cos(t*.6)*.2;
+    for(let p of pts){
+      if(p.pinned) continue;
+      const vx=(p.x-p.px)*.98,vy=(p.y-p.py)*.98;
+      p.px=p.x; p.py=p.y;
+      p.x+=vx+wind; p.y+=vy+gravity;
+      const dx=p.x-mX,dy=p.y-mY,d=Math.hypot(dx,dy);
+      if(d<88){const f=(88-d)/88*2.4;p.x+=dx/d*f;p.y+=dy/d*f;}
+    }
+    for(let i=0;i<8;i++){
+      for(const[a,b,rest]of links){
+        const pa=pts[a],pb=pts[b];
+        const dx=pb.x-pa.x,dy=pb.y-pa.y,d=Math.hypot(dx,dy)||.001;
+        const diff=(d-rest)/d*.76,fx=dx*diff*.5,fy=dy*diff*.5;
+        if(!pa.pinned){pa.x+=fx;pa.y+=fy;}
+        if(!pb.pinned){pb.x-=fx;pb.y-=fy;}
+      }
+      for(const p of pts) if(p.pinned){p.x=p.ox;p.y=p.oy;}
+    }
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    colorFn(ctx,W,H,'bg');
+    for(let r=0;r<rows-1;r++) for(let cc=0;cc<cols-1;cc++){
+      const i=r*cols+cc;
+      const p1=pts[i],p2=pts[i+1],p3=pts[i+cols+1],p4=pts[i+cols];
+      const nx=(p2.y-p1.y)+(p3.y-p4.y),ny=-(p2.x-p1.x)-(p3.x-p4.x);
+      const light=Math.max(0,Math.min(1,(nx*.44+ny*.24)/55+.5));
+      ctx.beginPath();
+      ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.lineTo(p3.x,p3.y);ctx.lineTo(p4.x,p4.y);
+      ctx.closePath();
+      colorFn(ctx,W,H,'fill',light);
+      ctx.fill();
+      if(light>.62){ctx.fillStyle=`rgba(201,168,76,${(light-.62)*.36})`;ctx.fill();}
+    }
+  }
+
+  function loop(){ step(); draw(); return requestAnimationFrame(loop); }
+  window.addEventListener('resize',resize);
+  resize();
+  return loop();
+}
+
+// Login cloth (dark gold)
+initCloth('loginCanvas',22,16,.2,(ctx,W,H,type,light)=>{
+  if(type==='bg'){
+    const g=ctx.createRadialGradient(W*.5,H*.5,0,W*.5,H*.5,W*.7);
+    g.addColorStop(0,'rgba(18,10,4,.97)');g.addColorStop(1,'rgba(5,3,2,.99)');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  } else {
+    const lr=Math.round(45+light*70),lg=Math.round(22+light*25),lb=Math.round(10+light*12);
+    ctx.fillStyle=`rgba(${lr},${lg},${lb},.78)`;
+  }
+});
+
+// ── INIT MAIN SITE ───────────────────────────
+function initMain(){
+  document.getElementById('navName').textContent = user.firstName;
+
+  // Initial product cards (before AI finds new ones)
+  const initialProds = [
+    {name:'The Velour Evening Gown', material:'Silk Charmeuse · Limited', price:'£3,800', category:'gown',   badge:'', description:'A floor-length gown in liquid silk charmeuse with gathered décolleté.'},
+    {name:'Cashmere Drape Coat',     material:'Italian Cashmere',         price:'£2,400', category:'coat',   badge:'', description:'Enveloping double-faced cashmere with a waterfall front.'},
+    {name:'The Sovereign Blazer',    material:'Duchess Satin',            price:'£1,950', category:'blazer', badge:'', description:'An architectural blazer in obsidian satin — power distilled into couture.'},
+    {name:'Silk Pleated Trousers',   material:'Japanese Silk',            price:'£890',   category:'trouser',badge:'', description:'Wide palazzo trousers in washed Japanese silk, impossibly fluid.'},
+    {name:'Velvet Structured Bodice',material:'Crushed Velvet',           price:'£1,250', category:'top',    badge:'', description:'A boned velvet bodice that sculpts the silhouette to perfection.'},
+  ];
+  initialProds.forEach(p=>addProductCard(p,false));
+
+  // Hero cloth
+  loopId = initCloth('heroCloth',26,18,.26,(ctx,W,H,type,light)=>{
+    if(type==='bg'){
+      const g=ctx.createRadialGradient(W*.3,H*.4,50,W*.5,H*.5,W*.75);
+      g.addColorStop(0,'rgba(22,12,6,.97)');g.addColorStop(1,'rgba(5,3,2,.99)');
+      ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    } else {
+      const lr=Math.round(50+light*85),lg=Math.round(18+light*28),lb=Math.round(12+light*18);
+      ctx.fillStyle=`rgba(${lr},${lg},${lb},.84)`;
+    }
+  });
+
+  initScrollReveal();
+  startAgent();
+
+  // Show chat notification after 8s
+  setTimeout(()=>{
+    if(!chatOpen){
+      document.getElementById('chatNotif').style.display='flex';
+      document.getElementById('chatNotif').textContent='1';
+    }
+  },8000);
+}
+
+// ── CLOCK UPDATE ─────────────────────────────
+setInterval(()=>{
+  const clk=document.getElementById('agentClock');
+  // Don't override "Updated X:XX"
+},60000);
+
+</script>
+</body>
+</html>
